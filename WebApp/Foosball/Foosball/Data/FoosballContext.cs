@@ -21,5 +21,7 @@ namespace Foosball.Models
         public DbSet<Foosball.Models.Match> Match { get; set; }
 
         public DbSet<Foosball.Models.Goal> Goal { get; set; }
+
+        public DbSet<Foosball.Models.Rating> Rating { get; set; }
     }
 }

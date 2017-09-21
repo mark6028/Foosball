@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Foosball.Models;
 
-namespace Foosball.Controllers
+namespace Foosball.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Goals")]

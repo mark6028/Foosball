@@ -16,6 +16,11 @@ namespace Foosball.Models
         [Required]
         public int Tag { get; set; }
 
+        [Required]
+        public int Rating { get; set; }
+
         public List<Goal> Goals { get; set; }
+
+        public List<Rating> Ratings { get; set; }
     }
 }

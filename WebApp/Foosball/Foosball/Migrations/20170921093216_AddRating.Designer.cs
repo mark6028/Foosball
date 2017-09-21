@@ -11,9 +11,10 @@ using System;
 namespace Foosball.Migrations
 {
     [DbContext(typeof(FoosballContext))]
-    partial class MatchContextModelSnapshot : ModelSnapshot
+    [Migration("20170921093216_AddRating")]
+    partial class AddRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
