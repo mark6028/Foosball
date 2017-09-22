@@ -96,7 +96,7 @@ def attackblack(*args):
 
 
 root = Tk()
-#root.attributes("-fullscreen", True)
+root.attributes("-fullscreen", True)
 root.title("Altran Table Football")
 greydefencephoto = PhotoImage(file="../Images/GreyDefence.png")
 greyattackphoto = PhotoImage(file="../Images/GreyAttack.png")
