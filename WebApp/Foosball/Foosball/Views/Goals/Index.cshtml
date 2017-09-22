@@ -16,7 +16,10 @@
                     @Html.DisplayNameFor(model => model.Position)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Timestamp)
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastUpdatedAt)
                 </th>
             <th>
                 @Html.DisplayNameFor(model => model.Match)
@@ -34,7 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Position)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Timestamp)
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdatedAt)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Match.Id)

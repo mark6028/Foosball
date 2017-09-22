@@ -10,4 +10,57 @@
 
     @{Html.RenderPartial("Index/_Tiles");}
     @{Html.RenderPartial("Index/_Leaderboards");}
+
+    @section scripts {
+    <script src="~/js/signalr-client.min.js"></script>
+        <!--Add script to update the page and send messages.-->
+        <script type="text/javascript">
+            let connection = new signalR.HubConnection('/goal');
+
+            var liveGoalContainer = $('#livegoals-list');
+
+            connection.on('send', data => {
+                console.log('data', data);
+                var goal = null;
+                try {
+                    goal = JSON.parse(data);
+                } catch (e) {
+                    return;
+                }
+
+                if (!goal.Match) return;
+
+                //append goal data to container
+                $('<li>').
+                    append($('<div>')
+                        .addClass('block')
+                        .append($('<div>')
+                            .addClass('block_container')
+                            .append($('<h2>')
+                                .addClass('title')
+                                .html('<a><i class="fa fa-futbol-o"></i>&nbsp;Goal scored by ' + goal.Match.TeamGrey.Description +'!</a>')
+                            )
+                            .append($('<div>')
+                                .addClass('byline')
+                                .html('<span>1 minute ago</span> by <a>' + goal.Player.Name+'</a>')
+                            )
+                            .append($('<p>')
+                                .addClass('excerpt')
+                                .html('Current score: <strong>8-3</strong><a class="pull-right">Match&nbsp;Details</a>')
+                            )
+                        )
+                ).prependTo(liveGoalContainer);
+
+                //only keep last 5 entries
+                liveGoalContainer.find("li").slice(5).remove();
+
+                //increment total goals
+                var totalGoals = parseInt($('#totalGoalsCount').text());
+                $('#totalGoalsCount').text(totalGoals + 1);
+            });
+
+            connection.start()
+                .then(() => connection.invoke('send', 'Welcome!'));
+        </script>
+    }
 </div>

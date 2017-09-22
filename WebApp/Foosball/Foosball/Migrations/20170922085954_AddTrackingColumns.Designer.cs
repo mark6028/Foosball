@@ -11,9 +11,10 @@ using System;
 namespace Foosball.Migrations
 {
     [DbContext(typeof(FoosballContext))]
-    partial class MatchContextModelSnapshot : ModelSnapshot
+    [Migration("20170922085954_AddTrackingColumns")]
+    partial class AddTrackingColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,9 +26,9 @@ namespace Foosball.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime?>("LastUpdatedAt");
+                    b.Property<DateTime>("LastUpdatedAt");
 
                     b.Property<int>("MatchId");
 
@@ -49,10 +50,6 @@ namespace Foosball.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedAt");
-
-                    b.Property<DateTime?>("LastUpdatedAt");
-
                     b.Property<int>("State");
 
                     b.Property<int>("TeamBlackId");
@@ -73,10 +70,6 @@ namespace Foosball.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedAt");
-
-                    b.Property<DateTime?>("LastUpdatedAt");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -92,13 +85,13 @@ namespace Foosball.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedAt");
-
                     b.Property<float>("ELO");
 
-                    b.Property<DateTime?>("LastUpdatedAt");
-
                     b.Property<int>("PlayerId");
+
+                    b.Property<DateTime?>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
 

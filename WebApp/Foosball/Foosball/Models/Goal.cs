@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Goal
+    public class Goal : ITrackable
     {
         public int Id { get; set; }
 
@@ -23,8 +25,8 @@ namespace Foosball.Models
         public int PlayerId { get; set; }
         public Player Player { get; set; }
 
-        [Timestamp]
-        public DateTime Timestamp { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? LastUpdatedAt { get; set; }
     }
 
     public enum GoalPosition

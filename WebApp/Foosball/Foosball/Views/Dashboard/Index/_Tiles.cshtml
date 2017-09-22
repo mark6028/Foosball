@@ -2,7 +2,7 @@
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-futbol-o"></i></div>
-            <div class="count">@ViewData["TotalGoals"]</div>
+            <div class="count" id="totalGoalsCount">@ViewData["TotalGoals"]</div>
             <h3>Goals</h3>
             <p>Total amount of goals scored</p>
         </div>
@@ -10,15 +10,15 @@
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-archive"></i></div>
-            <div class="count">@ViewData["TotalMatches"]</div>
-            <h3>Players</h3>
+            <div class="count" id="totalMatchesCount">@ViewData["TotalMatches"]</div>
+            <h3>Matches</h3>
             <p>Total amount of matches played</p>
         </div>
     </div>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-users"></i></div>
-            <div class="count">@ViewData["TotalPlayers"]</div>
+            <div class="count" id="totalPlayersCount">@ViewData["TotalPlayers"]</div>
             <h3>Players</h3>
             <p>Total amount of players registered</p>
         </div>

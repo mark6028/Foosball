@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Match
+    public class Match : ITrackable
     {
         public int Id { get; set; }
 
@@ -25,6 +25,9 @@ namespace Foosball.Models
         public Team TeamBlack { get; set; }
         
         public List<Goal> Goals { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? LastUpdatedAt { get; set; }
 
         public string Description
         {

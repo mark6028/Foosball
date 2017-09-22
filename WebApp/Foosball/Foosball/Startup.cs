@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Foosball.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using Foosball.Hubs;
+using Microsoft.AspNetCore.Sockets;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Foosball
 {
@@ -24,7 +23,11 @@ namespace Foosball
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IGoalHub, GoalHub>();
+            services.AddSingleton<IHubContext<GoalHub>, HubContext<GoalHub>>();
+
             services.AddMvc();
+            services.AddSignalR();
 
             services.AddDbContext<FoosballContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("FoosballContext")));
@@ -32,7 +35,7 @@ namespace Foosball
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Foosball API", Version = "v1" });
-            });
+            });           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +67,12 @@ namespace Foosball
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Dashboard}/{action=Index}/{id?}");
+            });
+
+            app.UseWebSockets();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<GoalHub>("goal");
             });
         }
     }

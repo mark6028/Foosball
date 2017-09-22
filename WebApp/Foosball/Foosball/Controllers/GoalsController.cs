@@ -58,7 +58,7 @@ namespace Foosball.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MatchId,Position,PlayerId,Timestamp")] Goal goal)
+        public async Task<IActionResult> Create([Bind("Id,MatchId,Position,PlayerId,CreatedAt,LastUpdatedAt")] Goal goal)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace Foosball.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MatchId,Position,PlayerId,Timestamp")] Goal goal)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MatchId,Position,PlayerId,CreatedAt,LastUpdatedAt")] Goal goal)
         {
             if (id != goal.Id)
             {
