@@ -2,22 +2,29 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 import time
-import nxppy
-#import RPi.GPIO as GPIO
-#import _thread
-
+import threading
 
 #mifare = nxppy.Mifare()
 
-def flashbutton(buttonnr,period):
-    while True:
-        print(buttonnr + "Aan")
-        time.sleep(period/2)
-        print(buttonnr + "Uit")
-        time.sleep(period/2)
+
+def blinkbutton(buttonid, hertz):
+    for x in range(0,3):
+        print(buttonid + "Aan")
+        time.sleep((1/float(hertz)/2))
+        print(buttonid + "Uit")
+        time.sleep((1/float(hertz)/2))
+
+def center(toplevel):
+    toplevel.update_idletasks()
+    w = toplevel.winfo_screenwidth()
+    h = toplevel.winfo_screenheight()
+    size = tuple(int(_) for _ in toplevel.geometry().split('+')[0].split('x'))
+    x = w/2 - size[0]/2
+    y = h/2 - size[1]/2
+    toplevel.geometry("%dx%d+%d+%d" % (size + (x, y)))
 
 def defencegrey(*args):
-    #try:
+    try:
         win = Toplevel()
         win.title("scan your tag")
 
@@ -26,20 +33,29 @@ def defencegrey(*args):
 
         b = ttk.Button(win, text="cancel", command=win.destroy)
         b.grid(row=1, column=0)
-        #thread.start_new_thread(flashbutton,("GreyDefence",1))
-    #except:
-     #   pass
+        buttonID = "GreyDefence"
+        hertz = 5
+        center(win)
+        t = threading.Thread(target=blinkbutton,args=("greydefence", 3))
+        t.daemon = True
+        t.start()
+    except:
+        pass
 
 def attackgrey(*args):
     try:
         win = Toplevel()
         win.title("scan your tag")
-        
+
         l = ttk.Label(win, text="Scan your tag", font='helvetica 40')
         l.grid(row=0, column=0)
 
         b = ttk.Button(win, text="cancel", command=win.destroy)
         b.grid(row=1, column=0)
+        center(win)
+        t = threading.Thread(target=blinkbutton,args=("greyattack", 3))
+        t.daemon = True
+        t.start()
     except:
         pass
         
@@ -53,6 +69,10 @@ def defenceblack(*args):
 
         b = ttk.Button(win, text="cancel", command=win.destroy)
         b.grid(row=1, column=0)
+        center(win)
+        t = threading.Thread(target=blinkbutton,args=("blackdefence", 3))
+        t.daemon = True
+        t.start()
     except:
         pass
         
@@ -61,11 +81,16 @@ def attackblack(*args):
         win = Toplevel()
         win.title("scan your tag")
         
+        
         l = ttk.Label(win, text="Scan your tag", font='helvetica 40')
         l.grid(row=0, column=0)
 
         b = ttk.Button(win, text="cancel", command=win.destroy)
         b.grid(row=1, column=0)
+        center(win)
+        t = threading.Thread(target=blinkbutton,args=("blackattack", 3))
+        t.daemon = True
+        t.start()
     except:
         pass
 
@@ -107,7 +132,6 @@ frame2.grid(column=3, row=0, columnspan=1, rowspan=1)
 frame3.grid(column=0, row=0, columnspan=1, rowspan=1)
 frame4.grid(column=0, row=1, columnspan=1, rowspan=1)
 imageframe.grid(column=1,row = 0, columnspan=2, rowspan=2)
-
 
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
