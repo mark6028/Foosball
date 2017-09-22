@@ -9,10 +9,30 @@
     </div>
 
     @{Html.RenderPartial("Index/_Tiles");}
-    @{Html.RenderPartial("Index/_Leaderboards");}
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6">
+                    @{Html.RenderPartial("Index/_TopPlayers");}
+                </div>
+                <div class="col-md-6">
+                    @{Html.RenderPartial("Index/_TopTeams");}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @{Html.RenderPartial("Index/_CompletedMatches");}
+                </div>
+            </div>      
+        </div>
+        <div class="col-md-4">
+            @{Html.RenderPartial("Index/_Livegoals");}
+        </div>
+    </div>
 
     @section scripts {
-    <script src="~/js/signalr-client.min.js"></script>
+        <script src="~/js/signalr-client.min.js"></script>
         <!--Add script to update the page and send messages.-->
         <script type="text/javascript">
             let connection = new signalR.HubConnection('/goal');
@@ -38,21 +58,29 @@
                             .addClass('block_container')
                             .append($('<h2>')
                                 .addClass('title')
-                                .html('<a><i class="fa fa-futbol-o"></i>&nbsp;Goal scored by ' + goal.Match.TeamGrey.Description +'!</a>')
+                                .html('<a><i class="fa fa-futbol-o"></i>&nbsp;Goal scored by ' + goal.Player.Name + '!</a>')
                             )
                             .append($('<div>')
                                 .addClass('byline')
-                                .html('<span>1 minute ago</span> by <a>' + goal.Player.Name+'</a>')
+                                .html('<time class="timeago" datetime="' + goal.CreatedAt + '"></time>')
                             )
                             .append($('<p>')
                                 .addClass('excerpt')
-                                .html('Current score: <strong>8-3</strong><a class="pull-right">Match&nbsp;Details</a>')
+                                .html('<a class="pull-right">Match&nbsp;Details</a>')
                             )
                         )
-                ).prependTo(liveGoalContainer);
+                    ).hide()
+                    .prependTo(liveGoalContainer)
+                    .fadeIn("slow");
 
                 //only keep last 5 entries
                 liveGoalContainer.find("li").slice(5).remove();
+
+                //hide info panel
+                $('#livegoals-alert').hide();
+
+                //initialize timeago
+                $("time.timeago").timeago();
 
                 //increment total goals
                 var totalGoals = parseInt($('#totalGoalsCount').text());

@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Foosball.Hubs;
 using Microsoft.AspNetCore.Sockets;
 using Microsoft.AspNetCore.SignalR;
+using Foosball.Broadcasters;
 
 namespace Foosball
 {
@@ -25,6 +26,7 @@ namespace Foosball
         {
             services.AddSingleton<IGoalHub, GoalHub>();
             services.AddSingleton<IHubContext<GoalHub>, HubContext<GoalHub>>();
+            services.AddScoped<IGoalBroadcaster, GoalBroadcaster> ();
 
             services.AddMvc();
             services.AddSignalR();

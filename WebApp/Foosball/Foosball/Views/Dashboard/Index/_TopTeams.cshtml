@@ -1,0 +1,28 @@
+﻿<div class="x_panel">
+    <div class="x_title">
+        <h2>Team Leaderboard</h2>
+        <div class="clearfix"></div>
+    </div>
+
+    <ul class="list-unstyled top_profiles scroll-view">
+        @{int countTeam = 0;}
+        @foreach (var team in ViewBag.TopTeams)
+        {
+            countTeam++;
+            <li class="media event">
+                <a class="pull-left border-aero profile_thumb" style="padding: 9px 9px;">
+                    <i class="fa fa-users aero"></i>
+                </a>
+                <div class="media-body">
+                    <a class="title" href="#">@countTeam.</a>
+                    <p><strong> @team.Description </strong></p>
+                    <p>
+                        <span class="label label-default">9999</span>
+                        <span class="pull-right"><small>2017-12-31</small></span>
+                    </p>
+                </div>
+            </li>
+
+        }
+    </ul>
+</div>

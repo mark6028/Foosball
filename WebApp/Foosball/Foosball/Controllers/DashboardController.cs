@@ -23,7 +23,7 @@ namespace Foosball.Controllers
             ViewData["TotalGoals"] = _context.Goal.Count();
             ViewData["TotalMatches"] = _context.Match.Count();
             ViewData["TotalPlayers"] = _context.Player.Count();
-            ViewData["AvgMatchDuration"] = 5.3; // _context.Match.Count();
+            ViewData["AllMatches"] = _context.Match;
 
             //Scoreboard data
             /*ViewData["TopPlayers"] = _context.Player.
@@ -46,7 +46,7 @@ namespace Foosball.Controllers
             ViewData["TopPlayerRatings"] = _context.Rating
                 .Include("Player")
                 .Where(r => idQuery.Contains(r.Id))
-                .OrderByDescending(r => r.ELO);      
+                .OrderByDescending(r => r.ELO);
 
             /*ViewData["TopPlayers"] = _context.Player                
                 .Select(p => new Player
@@ -64,7 +64,35 @@ namespace Foosball.Controllers
                 .OrderBy(t => t.Description)
                 .Take(10);
 
-            return View();            
+            ViewData["CompletedMatches"] = _context.Match
+                .Where(m => m.State == MatchState.Completed)
+                .Include(m => m.Goals)
+                .Include(m => m.TeamBlack)
+                    .ThenInclude(t => t.PlayerOne)
+                .Include(m => m.TeamBlack)
+                    .ThenInclude(t => t.PlayerTwo)
+                .Include(m => m.TeamGrey)
+                    .ThenInclude(t => t.PlayerOne)
+                .Include(m => m.TeamGrey)
+                    .ThenInclude(t => t.PlayerTwo)
+                .Take(10);
+
+            return View();
+        }
+
+        public IActionResult Player(int id)
+        {
+            ViewData["Player"] = _context.Player
+                .Include(p => p.Ratings)
+                .Where(p => p.Id == id)
+                .FirstOrDefault();
+
+            ViewData["Teams"] = _context.Team
+                .Include(t => t.PlayerOne)
+                .Include(t => t.PlayerTwo)
+                .Where(p => p.PlayerOneId == id || p.PlayerTwoId == id);
+
+            return View();
         }
     }
 }

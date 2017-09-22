@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Foosball.Models;
+using Foosball.Broadcasters;
 
 namespace Foosball.Controllers
 {
     public class GoalsController : Controller
     {
         private readonly FoosballContext _context;
+        private readonly IGoalBroadcaster _goalBroadcaster;
 
-        public GoalsController(FoosballContext context)
+        public GoalsController(FoosballContext context, IGoalBroadcaster goalBroadcaster)
         {
             _context = context;
+            _goalBroadcaster = goalBroadcaster;
         }
 
         // GET: Goals
@@ -58,12 +61,15 @@ namespace Foosball.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MatchId,Position,PlayerId,CreatedAt,LastUpdatedAt")] Goal goal)
+        public async Task<IActionResult> Create([Bind("Id,MatchId,Position,PlayerId,TeamColor,CreatedAt,LastUpdatedAt")] Goal goal)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(goal);
                 await _context.SaveChangesAsync();
+
+                await _goalBroadcaster.BroadcastGoalCreated(goal);
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MatchId"] = new SelectList(_context.Match, "Id", "Id", goal.MatchId);
@@ -94,7 +100,7 @@ namespace Foosball.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MatchId,Position,PlayerId,CreatedAt,LastUpdatedAt")] Goal goal)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MatchId,Position,PlayerId,TeamColor,CreatedAt,LastUpdatedAt")] Goal goal)
         {
             if (id != goal.Id)
             {

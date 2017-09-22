@@ -1,0 +1,48 @@
+﻿<div class="x_panel">
+    <div class="x_title">
+        <h2>Matches</h2>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="col-xs-12 bg-white">
+            @foreach (var match in ViewBag.CompletedMatches)
+            {
+                int goalsGrey = 0;
+                int goalsBlack = 0;
+
+                foreach (var goal in match.Goals)
+                {
+                    if (goal.TeamColor == TeamColor.Black) { goalsBlack++; }
+                    if (goal.TeamColor == TeamColor.Grey) { goalsGrey++; }
+                }
+
+                int totalGoals = goalsGrey + goalsBlack;
+                decimal percentage = 0m;
+
+                if (goalsBlack > 0) {
+                    percentage = (goalsGrey / goalsBlack) * 100;
+                }
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <span class="left"><strong>@match.TeamGrey.Description</strong></span>
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="left"><i class="fa fa-futbol-o"></i>&nbsp;@goalsGrey</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="progress progress_md">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="@percentage" style="width: @percentage%;" aria-valuenow="@percentage"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="right"><i class="fa fa-futbol-o"></i>&nbsp;@goalsBlack</span>
+                    </div>
+                    <div class="col-xs-3">
+                        <span class="right"><strong>@match.TeamBlack.Description</strong></span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

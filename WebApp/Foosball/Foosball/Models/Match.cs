@@ -24,7 +24,7 @@ namespace Foosball.Models
         public int TeamBlackId { get; set; }
         public Team TeamBlack { get; set; }
         
-        public List<Goal> Goals { get; set; }
+        public virtual List<Goal> Goals { get; set; }
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
@@ -39,6 +39,17 @@ namespace Foosball.Models
                 return String.Format("{0} vs. {1}",
                     TeamGrey.Description,
                     TeamBlack.Description);
+            }
+        }
+
+        public int Duration
+        {
+            get
+            {
+                if (CreatedAt == null || LastUpdatedAt == null)
+                    return 0;
+
+                return ((DateTime)LastUpdatedAt - (DateTime)CreatedAt).Seconds;
             }
         }
     }

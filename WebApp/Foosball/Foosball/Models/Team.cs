@@ -15,13 +15,13 @@ namespace Foosball.Models
         public int PlayerOneId { get; set; }
 
         [Display(Name = "Player 1")]
-        public Player PlayerOne { get; set; }
+        public virtual Player PlayerOne { get; set; }
 
         [Display(Name = "Player 2")]
         public int PlayerTwoId { get; set; }
 
         [Display(Name = "Player 2")]
-        public Player PlayerTwo { get; set; }
+        public virtual Player PlayerTwo { get; set; }
 
         public string Description
         {

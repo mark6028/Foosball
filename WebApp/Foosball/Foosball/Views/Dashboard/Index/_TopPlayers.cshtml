@@ -1,0 +1,28 @@
+﻿<div class="x_panel">
+    <div class="x_title">
+        <h2>Player Leaderboard</h2>
+        <div class="clearfix"></div>
+    </div>
+            
+    <ul class="list-unstyled top_profiles scroll-view">
+        @{int count = 0;}
+        @foreach (var rating in ViewBag.TopPlayerRatings)
+        {
+            count++;
+            <li class="media event">
+                <a class="pull-left border-aero profile_thumb">
+                    <i class="fa fa-user aero"></i>
+                </a>
+                <div class="media-body">
+                    <a class="title" href="#">@count.</a>
+                    <p><strong>@rating.Player.Name</strong></p>
+                    <p>
+                        <span class="label label-default">@rating.ELO</span>
+                        <span class="pull-right"><small>@rating.LastUpdatedAt</small></span>
+                    </p>
+                </div>
+            </li>
+                
+        }
+    </ul>
+</div>

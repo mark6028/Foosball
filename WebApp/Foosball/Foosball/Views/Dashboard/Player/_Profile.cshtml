@@ -1,0 +1,27 @@
+﻿<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>@ViewBag.Player.Name</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                    <h4>Teams</h4>
+                    <ul>
+                    @foreach (var team in ViewBag.Teams)
+                    {
+                        <li>
+                            @team.Description                                
+                        </li>
+                    }
+                    </ul>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    @{Html.RenderPartial("Player/_Graph");}
+                    @{Html.RenderPartial("Player/_Tabs");}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

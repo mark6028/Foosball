@@ -15,7 +15,7 @@ namespace Foosball.Models
         [Required]
         [Display(Name = "Match")]
         public int MatchId { get; set; }
-        public Match Match { get; set; }
+        public virtual Match Match { get; set; }
 
         [Required]
         public GoalPosition Position { get; set; }
@@ -23,7 +23,11 @@ namespace Foosball.Models
         [Required]
         [Display(Name = "Player")]
         public int PlayerId { get; set; }
-        public Player Player { get; set; }
+        public virtual Player Player { get; set; }
+
+        [Required]
+        [Display(Name = "Team Color")]
+        public TeamColor TeamColor { get; set; }
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
@@ -33,5 +37,11 @@ namespace Foosball.Models
     {
         Defense,
         Offense
+    }
+
+    public enum TeamColor
+    {
+        Black,
+        Grey
     }
 }
