@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "Player overview";
+}
+
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+    </div>
+
+    @{Html.RenderPartial("Players/_Table");}
+</div>
+

@@ -48,8 +48,6 @@
                     return;
                 }
 
-                if (!goal.Match) return;
-
                 //append goal data to container
                 $('<li>').
                     append($('<div>')
@@ -58,7 +56,11 @@
                             .addClass('block_container')
                             .append($('<h2>')
                                 .addClass('title')
-                                .html('<a><i class="fa fa-futbol-o"></i>&nbsp;Goal scored by ' + goal.Player.Name + '!</a>')
+                                .append($('<a>')
+                                    .css("color", goal.TeamColor == 0 ? "black" : "grey")
+                                    //.css("font-weight","bold")
+                                    .html('<i class="fa fa-futbol-o"></i>&nbsp;Goal scored by ' + goal.Player.Name + '!')    
+                                )
                             )
                             .append($('<div>')
                                 .addClass('byline')

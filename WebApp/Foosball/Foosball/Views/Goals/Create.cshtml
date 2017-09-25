@@ -10,28 +10,6 @@
 <h4>Goal</h4>
 <hr />
 
-<div class="well" style="background-color: white;">
-    @(Html.DevExtreme().DataGrid()
-        .DataSource(new JS("customers"))
-        .Columns(c =>
-        {
-            c.Add().DataField("CompanyName");
-            c.Add().DataField("City");
-            c.Add().DataField("State");
-            c.Add().DataField("Phone");
-            c.Add().DataField("Fax");
-        })
-        .Paging(paging => paging.PageSize(10))
-        .Pager(pager =>
-        {
-            pager.ShowPageSizeSelector(true);
-            pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
-            pager.ShowInfo(true);
-        })
-        .SearchPanel(s => s.Visible(true))
-    )
-</div>
-
 <script>
     var customers=[{
     "ID": 1,

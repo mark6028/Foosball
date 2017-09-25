@@ -9,6 +9,8 @@ using Foosball.Hubs;
 using Microsoft.AspNetCore.Sockets;
 using Microsoft.AspNetCore.SignalR;
 using Foosball.Broadcasters;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Foosball
 {
@@ -28,7 +30,11 @@ namespace Foosball
             services.AddSingleton<IHubContext<GoalHub>, HubContext<GoalHub>>();
             services.AddScoped<IGoalBroadcaster, GoalBroadcaster> ();
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
             services.AddSignalR();
 
             services.AddDbContext<FoosballContext>(options =>

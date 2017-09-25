@@ -21,7 +21,7 @@ namespace Foosball.Controllers
         // GET: Ratings
         public async Task<IActionResult> Index()
         {
-            var foosballContext = _context.Rating.Include(r => r.Player);
+            var foosballContext = _context.Rating.Include(r => r.Player).Include(r => r.Team);
             return View(await foosballContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace Foosball.Controllers
 
             var rating = await _context.Rating
                 .Include(r => r.Player)
+                .Include(r => r.Team)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (rating == null)
             {
@@ -48,6 +49,7 @@ namespace Foosball.Controllers
         public IActionResult Create()
         {
             ViewData["PlayerId"] = new SelectList(_context.Player, "Id", "Name");
+            ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Id");
             return View();
         }
 
@@ -56,7 +58,7 @@ namespace Foosball.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PlayerId,ELO,Timestamp")] Rating rating)
+        public async Task<IActionResult> Create([Bind("Id,PlayerId,TeamId,ELO,CreatedAt,LastUpdatedAt")] Rating rating)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +67,7 @@ namespace Foosball.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlayerId"] = new SelectList(_context.Player, "Id", "Name", rating.PlayerId);
+            ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Id", rating.TeamId);
             return View(rating);
         }
 
@@ -82,6 +85,7 @@ namespace Foosball.Controllers
                 return NotFound();
             }
             ViewData["PlayerId"] = new SelectList(_context.Player, "Id", "Name", rating.PlayerId);
+            ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Id", rating.TeamId);
             return View(rating);
         }
 
@@ -90,7 +94,7 @@ namespace Foosball.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PlayerId,ELO,Timestamp")] Rating rating)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PlayerId,TeamId,ELO,CreatedAt,LastUpdatedAt")] Rating rating)
         {
             if (id != rating.Id)
             {
@@ -118,6 +122,7 @@ namespace Foosball.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlayerId"] = new SelectList(_context.Player, "Id", "Name", rating.PlayerId);
+            ViewData["TeamId"] = new SelectList(_context.Team, "Id", "Id", rating.TeamId);
             return View(rating);
         }
 
@@ -131,6 +136,7 @@ namespace Foosball.Controllers
 
             var rating = await _context.Rating
                 .Include(r => r.Player)
+                .Include(r => r.Team)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (rating == null)
             {

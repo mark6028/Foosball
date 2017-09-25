@@ -17,10 +17,10 @@
                 }
 
                 int totalGoals = goalsGrey + goalsBlack;
-                decimal percentage = 0m;
+                float percentage = 0f;
 
                 if (goalsBlack > 0) {
-                    percentage = (goalsGrey / goalsBlack) * 100;
+                    percentage = ((float)goalsGrey) / ((float)goalsBlack + (float)goalsGrey) * 100;
                 }
 
                 <div class="row">

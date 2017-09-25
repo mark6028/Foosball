@@ -23,6 +23,8 @@ namespace Foosball.Models
         [Display(Name = "Player 2")]
         public virtual Player PlayerTwo { get; set; }
 
+        public virtual List<Rating> Ratings { get; set; }
+
         public string Description
         {
             get

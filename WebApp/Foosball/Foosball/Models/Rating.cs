@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,11 +13,15 @@ namespace Foosball.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
         [Display(Name = "Player")]
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
 
         public virtual Player Player { get; set; }
+
+        [Display(Name = "Team")]
+        public int? TeamId { get; set; }
+
+        public virtual Team Team { get; set; }
 
         public float ELO { get; set; }
 

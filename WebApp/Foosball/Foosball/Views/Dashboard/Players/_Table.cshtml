@@ -1,0 +1,49 @@
+﻿<script>
+    var dataSource = @Json.Serialize(ViewBag.Players);
+</script>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="well" style="background-color: white;">
+            @(Html.DevExtreme().DataGrid()
+            /*.DataSource(d => d.WebApi()
+                .Controller("PlayersApi")
+                .Key("Id")
+                .LoadAction("GetPlayer")
+                .InsertAction("PostPlayer")
+                .UpdateAction("PutPlayer")
+                .DeleteAction("DeletePlayer"))
+            .RemoteOperations(true)*/
+            .DataSource(new JS("dataSource"))
+            .ShowBorders(true)
+            .Columns(c =>
+            {
+                c.Add()
+                    .Caption("Actions")
+                    .CellTemplate(@<text>@(Html.ActionLink(
+                            "Profile", 
+                            "Player", 
+                            "Dashboard", 
+                            new { id = 1 }, 
+                            new { @class = "btn btn-xs btn-default" }))</text>);
+
+                c.Add()
+                    .Caption("Rating")
+                    .DataField("elo");                
+
+                c.Add()
+                    .Caption("Name")
+                    .DataField("player.name");
+            })
+            .Paging(paging => paging.PageSize(3))
+            .Pager(pager =>
+            {
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+                pager.ShowInfo(true);
+            })
+            .SearchPanel(s => s.Visible(true))
+)
+        </div>
+    </div>
+</div>

@@ -42,14 +42,16 @@ namespace Foosball.Models
             }
         }
 
-        public int Duration
+        public TimeSpan Duration
         {
             get
             {
                 if (CreatedAt == null || LastUpdatedAt == null)
-                    return 0;
+                    return new TimeSpan(0);
 
-                return ((DateTime)LastUpdatedAt - (DateTime)CreatedAt).Seconds;
+                TimeSpan duration = (DateTime)LastUpdatedAt - (DateTime)CreatedAt;
+
+                return duration;
             }
         }
     }

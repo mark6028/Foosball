@@ -23,7 +23,18 @@ namespace Foosball.Controllers
             ViewData["TotalGoals"] = _context.Goal.Count();
             ViewData["TotalMatches"] = _context.Match.Count();
             ViewData["TotalPlayers"] = _context.Player.Count();
-            ViewData["AllMatches"] = _context.Match;
+            var matches = _context.Match
+               .Where(m => m.State == MatchState.Completed)
+                .Select(m => new Match
+                {
+                    CreatedAt = m.CreatedAt,
+                    LastUpdatedAt = m.LastUpdatedAt
+                })
+                .ToList();
+
+            
+            double averageDuration = matches.Average(m => m.Duration.TotalSeconds);
+            ViewData["AvgMatchDuration"] = TimeSpan.FromSeconds(averageDuration).ToString(@"hh\:mm\:ss"); ;
 
             //Scoreboard data
             /*ViewData["TopPlayers"] = _context.Player.
@@ -80,17 +91,61 @@ namespace Foosball.Controllers
             return View();
         }
 
+        public IActionResult Players()
+        {
+            var idQuery = _context.Rating
+                .GroupBy(r => r.PlayerId)
+                .Select(g => g.OrderByDescending(r => r.LastUpdatedAt).FirstOrDefault())
+                .OrderByDescending(r => r.ELO)
+                .Select(r => r.Id);
+
+            ViewData["Players"] = _context.Rating
+                .Include("Player")
+                .Where(r => idQuery.Contains(r.Id))
+                .OrderByDescending(r => r.ELO);
+
+            return View();
+        }
+
         public IActionResult Player(int id)
         {
             ViewData["Player"] = _context.Player
                 .Include(p => p.Ratings)
                 .Where(p => p.Id == id)
+                .Select(p => new Player
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Ratings = new List<Rating>
+                    {
+                        new Rating { ELO = p.Ratings[0].ELO }
+                    }
+                })
                 .FirstOrDefault();
 
-            ViewData["Teams"] = _context.Team
+            
+            var teams = _context.Team
                 .Include(t => t.PlayerOne)
                 .Include(t => t.PlayerTwo)
                 .Where(p => p.PlayerOneId == id || p.PlayerTwoId == id);
+
+            ViewData["Teams"] = teams;
+
+            var idQuery = teams.Select(r => r.Id);
+
+            ViewData["TeamMatches"] = _context.Match
+                .Where(m => m.State == MatchState.Completed)
+                .Include(m => m.Goals)
+                .Include(m => m.TeamBlack)
+                    .ThenInclude(t => t.PlayerOne)
+                .Include(m => m.TeamBlack)
+                    .ThenInclude(t => t.PlayerTwo)
+                .Include(m => m.TeamGrey)
+                    .ThenInclude(t => t.PlayerOne)
+                .Include(m => m.TeamGrey)
+                    .ThenInclude(t => t.PlayerTwo)
+                .Take(10)
+                .Where(r => idQuery.Contains(r.Id));
 
             return View();
         }
