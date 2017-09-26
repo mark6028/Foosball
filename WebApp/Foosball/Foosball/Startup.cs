@@ -30,10 +30,12 @@ namespace Foosball
             services.AddSingleton<IHubContext<GoalHub>, HubContext<GoalHub>>();
             services.AddScoped<IGoalBroadcaster, GoalBroadcaster> ();
 
-            services.AddMvc().AddJsonOptions(options => {
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+            services.AddMvc()
+                .AddJsonOptions(options => {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })
+                .AddXmlSerializerFormatters();
 
             services.AddSignalR();
 
@@ -74,7 +76,7 @@ namespace Foosball
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Dashboard}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
 
             app.UseWebSockets();

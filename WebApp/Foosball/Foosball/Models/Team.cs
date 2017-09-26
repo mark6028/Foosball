@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Team
+    public class Team : Entity
     {
-        public int Id { get; set; }
-
         [Required]
         [Display(Name = "Player 1")]
         public int PlayerOneId { get; set; }

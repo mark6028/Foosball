@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Player : ITrackable
+    public class Player : Entity, ITrackable
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 

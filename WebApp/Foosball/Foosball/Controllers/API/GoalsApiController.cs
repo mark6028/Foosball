@@ -6,120 +6,41 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Foosball.Models;
+using DevExtreme.AspNet.Data;
+using Newtonsoft.Json;
+using Foosball.Broadcasters;
 
 namespace Foosball.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Goals")]
-    public class GoalsApiController : Controller
+    public class GoalsApiController : BaseApiController<Goal>
     {
-        private readonly FoosballContext _context;
+        private readonly IGoalBroadcaster _goalBroadcaster;
 
-        public GoalsApiController(FoosballContext context)
+        public GoalsApiController(FoosballContext context, IGoalBroadcaster goalBroadcaster)
+            :base(context)
         {
-            _context = context;
+            _dbEntity = _context.Goal;
+            _goalBroadcaster = goalBroadcaster;
         }
 
-        // GET: api/GoalsApi
-        [HttpGet]
-        public IEnumerable<Goal> GetGoal()
-        {
-            return _context.Goal;
-        }
-
-        // GET: api/GoalsApi/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetGoal([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var goal = await _context.Goal.SingleOrDefaultAsync(m => m.Id == id);
-
-            if (goal == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(goal);
-        }
-
-        // PUT: api/GoalsApi/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGoal([FromRoute] int id, [FromBody] Goal goal)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != goal.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(goal).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GoalExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/GoalsApi
         [HttpPost]
-        public async Task<IActionResult> PostGoal([FromBody] Goal goal)
+        public override IActionResult Insert([FromForm] string values)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var entity = new Goal();
+            JsonConvert.PopulateObject(values, entity);
 
-            _context.Goal.Add(goal);
-            await _context.SaveChangesAsync();
+            if (!TryValidateModel(entity))
+                return BadRequest(ModelState.ToString());
 
-            return CreatedAtAction("GetGoal", new { id = goal.Id }, goal);
-        }
+            _dbEntity.Add(entity);
+            _context.SaveChanges();
 
-        // DELETE: api/GoalsApi/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGoal([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //broadcast goal scored to all signalR clients
+            _goalBroadcaster.GoalScored(entity);
 
-            var goal = await _context.Goal.SingleOrDefaultAsync(m => m.Id == id);
-            if (goal == null)
-            {
-                return NotFound();
-            }
-
-            _context.Goal.Remove(goal);
-            await _context.SaveChangesAsync();
-
-            return Ok(goal);
-        }
-
-        private bool GoalExists(int id)
-        {
-            return _context.Goal.Any(e => e.Id == id);
+            return Ok();
         }
     }
 }

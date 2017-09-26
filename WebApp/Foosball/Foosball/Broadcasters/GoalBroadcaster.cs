@@ -21,16 +21,30 @@ namespace Foosball.Broadcasters
             _goalhubContext = goalhubContext;
         }
 
-        public async Task BroadcastGoalCreated(Goal goal)
+        public async Task GoalScored(Goal goal)
         {
-            var goalObject = await _context.Goal
+            var goalObject = _context.Goal
                 .Include(g => g.Player)
                 .Include(g => g.Match)
-                .SingleOrDefaultAsync(g => g.Id == goal.Id);
+                .Select(g => new Goal
+                {
+                    Id = g.Id,
+                    TeamColor = g.TeamColor,
+                    Position = g.Position,
+                    Player = new Player
+                    {
+                        Id = g.Player.Id,
+                        Name = g.Player.Name
+                    },
+                    Match = new Match
+                    {
+                        Id = g.Match.Id
+                    }
+                }).SingleOrDefault(g => g.Id == goal.Id);
 
-            var goalJson = ConvertToJSON<Goal>(goalObject);
+            //var goalJson = ConvertToJSON<Goal>(goalObject);
 
-            await _goalhubContext.Clients.All.InvokeAsync("Send", goalJson);
+            await _goalhubContext.Clients.All.InvokeAsync("Send", goalObject);
         }
 
         private string ConvertToJSON<T>(T entity)

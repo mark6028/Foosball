@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Foosball.Models.Goal>
+
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="well" style="background-color: white;">
+            @(Html.DevExtreme().DataGrid()
+            .DataSource(d => d.WebApi()
+                .Controller("TeamsApi")
+                .Key("id")
+                .LoadAction("Get")
+                .InsertAction("Insert")
+                .UpdateAction("Update")
+                .DeleteAction("Delete"))
+            .RemoteOperations(true)
+            .ShowBorders(true)
+            .Editing(e => e.Mode(GridEditMode.Form)
+               .AllowUpdating(true)
+               .AllowAdding(true)
+               .AllowDeleting(true)
+            )
+            .Columns(c =>
+            {
+                c.Add()
+                    .DataField("id");
+
+                c.Add()
+                    .DataField("playerOneId")
+                    .Caption("Player 1")
+                    .Lookup(lookup => lookup
+                        .DataSource(d => d.WebApi().Controller("PlayersApi").LoadAction("Get").Key("id"))
+                        .ValueExpr("id")
+                        .DisplayExpr("name")
+                    );
+
+                c.Add()
+                    .DataField("playerTwoId")
+                    .Caption("Player 2")
+                    .Lookup(lookup => lookup
+                        .DataSource(d => d.WebApi().Controller("PlayersApi").LoadAction("Get").Key("id"))
+                        .ValueExpr("id")
+                        .DisplayExpr("name")
+                    );
+
+            })
+            .Paging(paging => paging.PageSize(10))
+            .Pager(pager =>
+            {
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+                pager.ShowInfo(true);
+            })
+            .SearchPanel(s => s.Visible(true))
+            )
+        </div>
+    </div>
+</div>

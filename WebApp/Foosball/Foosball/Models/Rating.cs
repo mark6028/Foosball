@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Rating : ITrackable
+    public class Rating : Entity, ITrackable
     {
-        [Key]
-        public int Id { get; set; }
 
         [Display(Name = "Player")]
         public int? PlayerId { get; set; }

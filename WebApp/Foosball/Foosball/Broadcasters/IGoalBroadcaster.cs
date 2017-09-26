@@ -5,6 +5,6 @@ namespace Foosball.Broadcasters
 {
     public interface IGoalBroadcaster
     {
-        Task BroadcastGoalCreated(Goal goal);
+        Task GoalScored(Goal goal);
     }
 }

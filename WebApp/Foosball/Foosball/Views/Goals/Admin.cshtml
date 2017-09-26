@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="well" style="background-color: white;">
+            @(Html.DevExtreme().DataGrid()
+            .DataSource(d => d.WebApi()
+                .Controller("GoalsApi")
+                .Key("id")
+                .LoadAction("Get")
+                .InsertAction("Insert")
+                .UpdateAction("Update")
+                .DeleteAction("Delete"))
+            .RemoteOperations(true)
+            .ShowBorders(true)
+            .Editing(e => e.Mode(GridEditMode.Form)
+               .AllowUpdating(true)
+               .AllowAdding(true)
+               .AllowDeleting(true)
+            )
+            .Columns(c =>
+            {
+                c.Add()
+                    .DataField("id");
+
+                c.Add()
+                    .GroupIndex(1)
+                    .DataField("matchId")
+                    .AutoExpandGroup(false)
+                    .Caption("Match")
+                    .Lookup(lookup => lookup
+                        .DataSource(d => d.WebApi().Controller("MatchesApi").LoadAction("Get").Key("id"))
+                        .ValueExpr("id")
+                        .DisplayExpr("description")
+                    );
+
+                c.Add()
+                    .GroupIndex(2)
+                    .AutoExpandGroup(false)
+                    .DataField("teamColor")
+                    .Lookup(lookup => lookup
+                        .DataSource(Html.GetEnumSelectList<TeamColor>())
+                        .ValueExpr("Value")
+                        .DisplayExpr("Text")
+                    );
+
+                c.Add()
+                    .DataField("position")
+                    .Lookup(lookup => lookup
+                        .DataSource(Html.GetEnumSelectList<GoalPosition>())
+                        .ValueExpr("Value")
+                        .DisplayExpr("Text")
+                    );
+
+                c.Add()
+                    .DataField("playerId")
+                    .Caption("Player")
+                    .Lookup(lookup => lookup
+                        .DataSource(d => d.WebApi().Controller("PlayersApi").LoadAction("Get").Key("id"))
+                        .ValueExpr("id")
+                        .DisplayExpr("name")
+                    );                
+            })
+            .Paging(paging => paging.PageSize(10))
+            .Pager(pager =>
+            {
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+                pager.ShowInfo(true);
+            })
+            .SearchPanel(s => s.Visible(true))
+            )
+        </div>
+    </div>
+</div>
