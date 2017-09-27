@@ -1,4 +1,5 @@
 ﻿using Foosball.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -44,19 +45,18 @@ namespace Foosball.Controllers
         public IActionResult Profile(int id)
         {
             ViewData["Player"] = _context.Player
-                .Include(p => p.Ratings)
                 .Where(p => p.Id == id)
-                .Select(p => new Player
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Ratings = new List<Rating>
-                    {
-                        new Rating { ELO = p.Ratings[0].ELO }
-                    }
-                })
                 .FirstOrDefault();
 
+            ViewData["Ratings"] = _context.Rating
+                .Where(r => r.PlayerId == id)
+                .Select(r => new Rating
+                {
+                    PlayerId = r.PlayerId,
+                    ELO = r.ELO,
+                    CreatedAt = r.CreatedAt,
+                    LastUpdatedAt = r.LastUpdatedAt
+                });
 
             var teams = _context.Team
                 .Include(t => t.PlayerOne)
@@ -84,6 +84,7 @@ namespace Foosball.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Admin()
         {
             return View();

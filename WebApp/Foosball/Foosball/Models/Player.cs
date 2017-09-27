@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Player : Entity, ITrackable
+    public class PlayerDTO : Entity, ITrackable
     {
         [Required]
         public string Name { get; set; }
 
         [Required]
-        public int Tag { get; set; }      
-
-        public virtual List<Goal> Goals { get; set; }
-
-        public virtual List<Rating> Ratings { get; set; }        
+        public int Tag { get; set; }
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
+    }
+
+    public class Player : PlayerDTO
+    {
+        public virtual List<Goal> Goals { get; set; }
+        public virtual List<Rating> Ratings { get; set; }                
     }
 }

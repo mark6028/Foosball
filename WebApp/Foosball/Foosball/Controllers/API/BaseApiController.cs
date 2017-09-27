@@ -9,10 +9,12 @@ using Foosball.Models;
 using DevExtreme.AspNet.Data;
 using Newtonsoft.Json;
 using Foosball.Broadcasters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Foosball.Controllers.API
 {
     [Produces("application/json")]
+    [Authorize]
     public abstract class BaseApiController<T> : Controller where T: Entity, new()
     {
         protected readonly FoosballContext _context;

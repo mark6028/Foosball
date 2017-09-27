@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Team : Entity
+    public class TeamDTO : Entity
     {
         [Required]
         [Display(Name = "Player 1")]
         public int PlayerOneId { get; set; }
 
+        [Display(Name = "Player 2")]
+        public int PlayerTwoId { get; set; }        
+    }
+
+    public class Team : TeamDTO
+    {
         [Display(Name = "Player 1")]
         public virtual Player PlayerOne { get; set; }
-
-        [Display(Name = "Player 2")]
-        public int PlayerTwoId { get; set; }
 
         [Display(Name = "Player 2")]
         public virtual Player PlayerTwo { get; set; }

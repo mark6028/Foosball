@@ -8,22 +8,23 @@ using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
-    public class Rating : Entity, ITrackable
+    public class RatingDTO : Entity, ITrackable
     {
-
         [Display(Name = "Player")]
         public int? PlayerId { get; set; }
 
-        public virtual Player Player { get; set; }
-
         [Display(Name = "Team")]
         public int? TeamId { get; set; }
-
-        public virtual Team Team { get; set; }
 
         public float ELO { get; set; }
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
+    }
+
+    public class Rating : RatingDTO
+    {    
+        public virtual Player Player { get; set; }
+        public virtual Team Team { get; set; }
     }
 }
