@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Rating>
 
 @{
-    ViewData["Title"] = "Player overview";
+    ViewData["Title"] = "Team overview";
 }
 
 <div class="">
@@ -22,32 +22,32 @@
 
     <div class="list-container">
         @(Html.DevExtreme().List()
-            .ID("players-list")
+            .ID("teams-list")
             .DataSource(Model)
             .DataSourceOptions(dso => dso
                 .Paginate(true)
                 .PageSize(10)
-                .Sort("Player.Name", false)
+                .Sort("Team.Description", false)
             )
-            .Option("itemTemplate", new JS("getPlayerItemTemplate"))
+            .Option("itemTemplate", new JS("getTeamItemTemplate"))
         )
     </div>
 
     <script>
         function textBox_onValueChanged(e) {
-            var dataSource = $("#players-list").dxList("instance").getDataSource();
-            dataSource.filter("Player.Name", "contains", e.value);
+            var dataSource = $("#teams-list").dxList("instance").getDataSource();
+            dataSource.filter("Team.Description", "contains", e.value);
             dataSource.load();
         }
 
-        function getPlayerItemTemplate(model) {
-            if (!model.Player || model.Player.Name == null)
-                return '- Player not found -';
+        function getTeamItemTemplate(model) {
+            if (!model.Team || model.Team.Description == null)
+                return '- Team not found -';
 
             return $('<div>')
                 .append($('<a>')
-                    .attr("href", "/Players/Profile/" + model.Player.Id)
-                    .html(model.Player.Name)
+                    .attr("href", "/Team/Profile/" + model.Player.Id)
+                    .html(model.Team.Description)
                     .css("width","100%")
                 )
                 .append($('<span>')

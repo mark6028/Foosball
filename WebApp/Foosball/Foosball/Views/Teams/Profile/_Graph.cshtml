@@ -1,0 +1,66 @@
+﻿@{
+    var dataSource = new List<object>();
+    foreach (var rating in ViewBag.Ratings)
+    {
+        dataSource.Add(new 
+        {
+            Rating = rating.ELO,
+            Timestamp = rating.CreatedAt.ToString("yyyy-MM-dd")
+        });
+    }
+}
+@(Html.DevExtreme().Chart()
+    .ID("line-chart")
+    .Palette(VizPalette.Violet)
+    .CommonSeriesSettings(s => s
+        .ArgumentField("Timestamp")
+        .ValueField("Rating")
+        .Type(SeriesType.Line)
+    )
+    .Margin(m => m.Bottom(20).Right(20))
+    .ArgumentAxis(a => a
+        .ValueMarginsEnabled(false)
+        .DiscreteAxisDivisionMode(DiscreteAxisDivisionMode.CrossLabels)
+        .Grid(g => g.Visible(true))
+        .ArgumentType(ChartDataType.DateTime)
+
+    )
+    .Series(s =>
+    {
+        s.Add().ValueField("Rating").Name("Rating");
+    })
+    .Legend(l => l.Visible(false))
+    .Title(t => t
+        .Text("Player's History")
+        .Subtitle(s => s.Text("(ELO rating)"))
+    )
+    .Export(e => e.Enabled(true))
+    .Tooltip(t => t
+        .Enabled(true)
+        .CustomizeTooltip(@<text>
+    function (arg) {
+    return {
+    text: arg.valueText
+    };
+    }
+    </text>)
+    )
+    /*.DataSource(new List<object> {
+        new { Rating = "USA", Hydro = 59.8, Oil = 937.6, Gas = 582, Coal = 564.3, Nuclear = 187.9 },
+        new { Country = "China", Hydro = 74.2, Oil = 308.6, Gas = 35.1, Coal = 956.9, Nuclear = 11.3 },
+        new { Country = "Russia", Hydro = 40, Oil = 128.5, Gas = 361.8, Coal = 105, Nuclear = 32.4 },
+        new { Country = "Japan", Hydro = 22.6, Oil = 241.5, Gas = 64.9, Coal = 120.8, Nuclear = 64.8 },
+        new { Country = "India", Hydro = 19, Oil = 119.3, Gas = 28.9, Coal = 204.8, Nuclear = 3.8 },
+        new { Country = "Germany", Hydro = 6.1, Oil = 123.6, Gas = 77.3, Coal = 85.7, Nuclear = 37.8 }
+    })
+    .DataSource(new List<object> {
+        new { Player = 1, Rating = 1800, Timestamp = "2017-01-01" },
+        new { Player = 1, Rating = 2100, Timestamp = "2017-02-10" },
+        new { Player = 1, Rating = 2000, Timestamp = "2017-03-01" },
+        new { Player = 1, Rating = 2200, Timestamp = "2017-04-01" },
+        new { Player = 1, Rating = 2110, Timestamp = "2017-05-01" },
+        new { Player = 1, Rating = 2080, Timestamp = "2017-06-01" },
+    })*/
+    //.DataSource(new List<object> { ViewBag.Ratings })
+    .DataSource(dataSource)
+)

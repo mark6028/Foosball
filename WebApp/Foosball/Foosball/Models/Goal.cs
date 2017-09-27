@@ -17,7 +17,11 @@ namespace Foosball.Models
 
         [Required]
         public GoalPosition Position { get; set; }
-        
+
+        [Required]
+        [Display(Name = "Player")]
+        public int PlayerId { get; set; }
+
         [Required]
         [Display(Name = "Team Color")]
         public TeamColor TeamColor { get; set; }
