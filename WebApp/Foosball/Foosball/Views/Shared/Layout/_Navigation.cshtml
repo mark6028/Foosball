@@ -4,14 +4,19 @@
     <li><a asp-area="" asp-controller="Players" asp-action="Index"><i class="fa fa-user"></i>&nbsp;Players</a></li>
     <li><a asp-area="" asp-controller="Teams" asp-action="Index"><i class="fa fa-users"></i>&nbsp;Teams</a></li>
 
-    <li>
-        <a><i class="fa fa-lock"></i> Admin <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu" style="">
-            <li><a asp-area="" asp-controller="Players" asp-action="Admin">Players</a></li>
-            <li><a asp-area="" asp-controller="Teams" asp-action="Admin">Teams</a></li>
-            <li><a asp-area="" asp-controller="Matches" asp-action="Admin">Matches</a></li>
-            <li><a asp-area="" asp-controller="Goals" asp-action="Admin">Goals</a></li>
-            <li><a asp-area="" asp-controller="Ratings" asp-action="Admin">Ratings</a></li>
-        </ul>
-    </li>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li>
+            <a><i class="fa fa-lock"></i> Admin <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu" style="">
+                <li><a asp-area="" asp-controller="Players" asp-action="Admin">Players</a></li>
+                <li><a asp-area="" asp-controller="Teams" asp-action="Admin">Teams</a></li>
+                <li><a asp-area="" asp-controller="Matches" asp-action="Admin">Matches</a></li>
+                <li><a asp-area="" asp-controller="Goals" asp-action="Admin">Goals</a></li>
+                <li><a asp-area="" asp-controller="Ratings" asp-action="Admin">Ratings</a></li>
+            </ul>
+        </li>
+
+        <li><a href="\Swagger"><i class="fa fa-server"></i>&nbsp;Swagger API</a></li>
+    }
 </ul>
