@@ -11,7 +11,7 @@ namespace Foosball.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Players")]
-    public class PlayersApiController : BaseApiController<Player>
+    public class PlayersApiController : BaseApiController<Player, PlayerDTO>
     {
         public PlayersApiController(FoosballContext context)
             : base(context)

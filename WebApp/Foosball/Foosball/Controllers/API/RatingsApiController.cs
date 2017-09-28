@@ -10,8 +10,8 @@ using Foosball.Models;
 namespace Foosball.Controllers.API
 {
     [Produces("application/json")]
-    [Route("api/RatingsApi")]
-    public class RatingsApiController : BaseApiController<Rating>
+    [Route("api/Ratings")]
+    public class RatingsApiController : BaseApiController<Rating, RatingDTO>
     {
         public RatingsApiController(FoosballContext context)
             : base(context)

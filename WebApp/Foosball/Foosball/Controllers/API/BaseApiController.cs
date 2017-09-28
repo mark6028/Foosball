@@ -14,8 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace Foosball.Controllers.API
 {
     [Produces("application/json")]
-    [Authorize]
-    public abstract class BaseApiController<T> : Controller where T: Entity, new()
+    public abstract class BaseApiController<T, TDTO> : Controller
+        where TDTO : Entity, new()
+        where T : TDTO, new()
     {
         protected readonly FoosballContext _context;
         protected DbSet<T> _dbEntity;
@@ -24,8 +25,6 @@ namespace Foosball.Controllers.API
         {
             _context = context;
         }
-
-        //--start devextreme API--
 
         [HttpGet]
         public virtual object Get(WebApiDataSourceLoadOptions loadOptions)
@@ -48,32 +47,62 @@ namespace Foosball.Controllers.API
                 return NotFound();
             }
 
-            return Ok(entity);
+            var dto = new TDTO();
+            ConvertModelToDTO(entity, out dto);
+
+            return Ok(dto);
         }
 
         [HttpPost]
-        public virtual IActionResult Insert([FromForm] string values)
+        [Route("json")]
+        public virtual IActionResult InsertJson([FromForm] string values)
         {
             var entity = new T();
             JsonConvert.PopulateObject(values, entity);
 
+            return Insert(entity);
+        }
+
+        [HttpPost]
+        public virtual IActionResult Insert(TDTO entity)
+        {
             if (!TryValidateModel(entity))
                 return BadRequest(ModelState.ToString());
 
-            _dbEntity.Add(entity);
+            var model = new T();
+            ConvertDTOToModel(entity, out model);
+
+            _dbEntity.Add(model);
             _context.SaveChanges();
 
             return Ok();
         }
 
         [HttpPut]
-        public virtual IActionResult Update([FromForm] int key, [FromForm] string values)
+        [Route("json")]
+        public virtual IActionResult UpdateJson([FromForm] int key, [FromForm] string values)
         {
             var entity = _dbEntity.First(o => o.Id == key);
             JsonConvert.PopulateObject(values, entity);
 
-            if (!TryValidateModel(entity))
-                return BadRequest(ModelState.ToString());
+            return HandleUpdate(entity);
+        }
+
+        [HttpPut]
+        public virtual IActionResult Update(TDTO entity)
+        {
+            var model = new T();
+            ConvertDTOToModel(entity, out model);
+
+            _context.Entry(model).State = EntityState.Modified;
+
+            return HandleUpdate(model);
+        }
+
+        private IActionResult HandleUpdate(T model)
+        {
+            if (!TryValidateModel(model))
+                return BadRequest();
 
             try
             {
@@ -81,7 +110,7 @@ namespace Foosball.Controllers.API
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EntityExists(entity.Id))
+                if (!EntityExists(model.Id))
                 {
                     return NotFound();
                 }
@@ -101,10 +130,20 @@ namespace Foosball.Controllers.API
             _dbEntity.Remove(entity);
             _context.SaveChanges();
         }
-
+        
         private bool EntityExists(int id)
         {
             return _dbEntity.Any(e => e.Id == id);
+        }
+
+        protected void ConvertDTOToModel(TDTO source, out T model)
+        {
+            model = JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source));
+        }
+
+        protected void ConvertModelToDTO(T source, out TDTO dto)
+        {
+            dto = JsonConvert.DeserializeObject<TDTO>(JsonConvert.SerializeObject(source));
         }
     }
 }

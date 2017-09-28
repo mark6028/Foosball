@@ -14,7 +14,7 @@ namespace Foosball.Controllers.API
 {
     [Produces("application/json")]
     [Route("api/Goals")]
-    public class GoalsApiController : BaseApiController<Goal>
+    public class GoalsApiController : BaseApiController<Goal, GoalDTO>
     {
         private readonly IGoalBroadcaster _goalBroadcaster;
 
@@ -26,19 +26,19 @@ namespace Foosball.Controllers.API
         }
 
         [HttpPost]
-        public override IActionResult Insert([FromForm] string values)
+        public override IActionResult Insert(GoalDTO entity)
         {
-            var entity = new Goal();
-            JsonConvert.PopulateObject(values, entity);
-
             if (!TryValidateModel(entity))
                 return BadRequest(ModelState.ToString());
 
-            _dbEntity.Add(entity);
+            var model = new Goal();
+            ConvertDTOToModel(entity, out model);
+
+            _dbEntity.Add(model);
             _context.SaveChanges();
 
             //broadcast goal scored to all signalR clients
-            _goalBroadcaster.GoalScored(entity);
+            _goalBroadcaster.GoalScored(model);
 
             return Ok();
         }

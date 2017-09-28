@@ -14,26 +14,8 @@ namespace Foosball
     {
     }
 
-
     public class WebApiDataSourceLoadOptionsBinder : IModelBinder
     {
-
-        public bool BindModel(ModelBindingContext bindingContext)
-        {
-            var loadOptions = new WebApiDataSourceLoadOptions();
-
-            DataSourceLoadOptionsParser.Parse(loadOptions, key => {
-                var value = bindingContext.ValueProvider.GetValue(key);
-                if (value != null)
-                    return value.FirstValue;
-
-                return null;
-            });
-
-            bindingContext.Model = loadOptions;
-            return true;
-        }
-
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var loadOptions = new WebApiDataSourceLoadOptions();
