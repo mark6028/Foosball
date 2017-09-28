@@ -1,6 +1,11 @@
 ﻿<div class="x_panel">
     <div class="x_title">
         <h2>Player Leaderboard</h2>
+        <span class="pull-right">
+            <a asp-area="" asp-controller="Players" asp-action="Index">
+                (All Players)
+            </a>
+        </span>
         <div class="clearfix"></div>
     </div>
             
@@ -17,7 +22,11 @@
                     </a>
                     <div class="media-body">
                         <a class="title" href="#">@count.</a>
-                        <p><strong>@rating.Player.Name</strong></p>
+                        <p>
+                            <a asp-area="" asp-controller="Players" asp-action="Profile" asp-route-id="@rating.Player.Id">
+                                <strong>@rating.Player.Name</strong>
+                            </a>
+                        </p>
                         <p>
                             <span class="label label-default">@rating.ELO</span>
                             <span class="pull-right"><small>@rating.LastUpdatedAt</small></span>

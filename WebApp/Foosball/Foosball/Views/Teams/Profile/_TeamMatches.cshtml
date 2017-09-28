@@ -20,7 +20,11 @@
 
         <div class="row">
             <div class="col-xs-3">
-                <span class="left" style="font-size:14px;"><strong>@match.TeamGrey.Description</strong></span>
+                <span class="left" style="font-size:14px;">
+                    <a asp-area="" asp-controller="Teams" asp-action="Profile" asp-route-id="@match.TeamGrey.Id">
+                        <strong>@match.TeamGrey.Description</strong>
+                    </a>
+                </span>
             </div>
             <div class="col-xs-1">
                 <span class="left"><i class="fa fa-futbol-o"></i>&nbsp;@goalsGrey</span>
@@ -34,7 +38,11 @@
                 <span class="right"><i class="fa fa-futbol-o"></i>&nbsp;@goalsBlack</span>
             </div>
             <div class="col-xs-3">
-                <span class="right" style="font-size:14px;"><strong>@match.TeamBlack.Description</strong></span>
+                <span class="right" style="font-size:14px;">
+                    <a asp-area="" asp-controller="Teams" asp-action="Profile" asp-route-id="@match.TeamBlack.Id">
+                        <strong>@match.TeamBlack.Description</strong>
+                    </a>
+                </span>
             </div>
         </div>
     }

@@ -23,6 +23,7 @@
     <div class="list-container">
         @(Html.DevExtreme().List()
             .ID("players-list")
+          .OnItemClick("navigateToPlayerProfile")
             .DataSource(Model)
             .DataSourceOptions(dso => dso
                 .Paginate(true)
@@ -40,13 +41,19 @@
             dataSource.load();
         }
 
+        function navigateToPlayerProfile(item) {
+            try {
+                window.location.href = '/Players/Profile/' + item.itemData.Player.Id;
+            } catch (e) { }
+        }
+
         function getPlayerItemTemplate(model) {
             if (!model.Player || model.Player.Name == null)
                 return '- Player not found -';
 
             return $('<div>')
                 .append($('<a>')
-                    .attr("href", "/Players/Profile/" + model.Player.Id)
+                    //.attr("href", "/Players/Profile/" + model.Player.Id)
                     .html(model.Player.Name)
                     .css("width","100%")
                 )

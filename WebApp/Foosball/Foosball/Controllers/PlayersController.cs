@@ -44,9 +44,14 @@ namespace Foosball.Controllers
 
         public IActionResult Profile(int id)
         {
-            ViewData["Player"] = _context.Player
+            var player = _context.Player
                 .Where(p => p.Id == id)
                 .FirstOrDefault();
+
+            if (player == null)
+                return BadRequest("Invalid Player ID");
+
+            ViewData["Player"] = player;
 
             ViewData["Ratings"] = _context.Rating
                 .Where(r => r.PlayerId == id)

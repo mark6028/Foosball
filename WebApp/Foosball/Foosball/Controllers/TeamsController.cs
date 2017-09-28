@@ -55,8 +55,8 @@ namespace Foosball.Controllers
         }
 
         public IActionResult Profile(int id)
-        {
-            ViewData["Team"] = _context.Team
+        {            
+            var team = _context.Team
                 .Include(t => t.PlayerOne)
                 .Include(t => t.PlayerTwo)
                 .Where(p => p.Id == id)
@@ -73,6 +73,11 @@ namespace Foosball.Controllers
                     }
                 })
                 .FirstOrDefault();
+
+            if (team == null)
+                return BadRequest("Invalid Team ID");
+
+            ViewData["Team"] = team;
 
             ViewData["Ratings"] = _context.Rating
                 .Where(r => r.TeamId == id)

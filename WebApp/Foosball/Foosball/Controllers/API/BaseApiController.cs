@@ -99,7 +99,7 @@ namespace Foosball.Controllers.API
             return HandleUpdate(model);
         }
 
-        private IActionResult HandleUpdate(T model)
+        protected virtual IActionResult HandleUpdate(T model)
         {
             if (!TryValidateModel(model))
                 return BadRequest();
@@ -131,7 +131,7 @@ namespace Foosball.Controllers.API
             _context.SaveChanges();
         }
         
-        private bool EntityExists(int id)
+        protected bool EntityExists(int id)
         {
             return _dbEntity.Any(e => e.Id == id);
         }

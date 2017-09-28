@@ -23,6 +23,7 @@
     <div class="list-container">
         @(Html.DevExtreme().List()
             .ID("teams-list")
+            .OnItemClick("navigateToTeamProfile")
             .DataSource(Model)
             .DataSourceOptions(dso => dso
                 .Paginate(true)
@@ -40,13 +41,19 @@
             dataSource.load();
         }
 
+        function navigateToTeamProfile(item) {
+            try {
+                window.location.href = '/Teams/Profile/' + item.itemData.Team.Id;
+            } catch (e) { }
+        }
+
         function getTeamItemTemplate(model) {
             if (!model.Team || model.Team.Description == null)
                 return '- Team not found -';
 
             return $('<div>')
                 .append($('<a>')
-                    .attr("href", "/Team/Profile/" + model.Player.Id)
+                    //.attr("href", "/Teams/Profile/" + model.Team.Id)
                     .html(model.Team.Description)
                     .css("width","100%")
                 )

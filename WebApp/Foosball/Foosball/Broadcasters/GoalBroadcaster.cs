@@ -42,20 +42,7 @@ namespace Foosball.Broadcasters
                     }
                 }).SingleOrDefault(g => g.Id == goal.Id);
 
-            //var goalJson = ConvertToJSON<Goal>(goalObject);
-
-            await _goalhubContext.Clients.All.InvokeAsync("Send", goalObject);
-        }
-
-        private string ConvertToJSON<T>(T entity)
-        {
-            return JsonConvert.SerializeObject(entity,
-                Formatting.Indented, 
-                new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-        }
+            await _goalhubContext.Clients.All.InvokeAsync("GoalScored", goalObject);
+        }        
     }
 }

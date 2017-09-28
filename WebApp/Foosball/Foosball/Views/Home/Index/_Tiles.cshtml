@@ -19,7 +19,11 @@
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-users"></i></div>
             <div class="count" id="totalPlayersCount">@ViewData["TotalPlayers"]</div>
-            <h3>Players</h3>
+            <h3>
+                <a asp-area="" asp-controller="Players" asp-action="Index">
+                    Players
+                </a>
+            </h3>
             <p>Total amount of players registered</p>
         </div>
     </div>

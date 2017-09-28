@@ -1,0 +1,144 @@
+﻿<div id="siren-container" style="display:none;">
+    <center>
+        <div class="lightbar">
+            <div id="light-1" class="light strobe blue">
+                <div class="inner-light"></div>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+            </div>
+            <div id="light-2" class="light strobe blue">
+                <div class="inner-light"></div>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+            </div>
+            <div id="light-3" class="light strobe blue">
+                <div class="inner-light"></div>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+            </div>
+            <div id="light-4" class="light strobe red delay">
+                <div class="inner-light"></div>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+            </div>
+            <div id="light-5" class="light strobe red delay">
+                <div class="inner-light"></div>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+            </div>
+            <div id="light-6" class="light strobe red delay">
+                <div class="inner-light"></div>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+                <span class="bulb"></span>
+            </div>
+        </div>
+    </center>
+</div>
+
+<script>
+    function activateSiren() {
+        $('#siren-container').show();
+        $('.light').attr('class', 'light');
+        setTimeout(function () {
+            $('#light-1, #light-2, #light-3').attr('class', 'light strobe blue');
+            $('#light-4, #light-5, #light-6').attr('class', 'light strobe red delay');
+        }, 50);
+    }
+    $('.light').attr('class', 'light');
+</script>

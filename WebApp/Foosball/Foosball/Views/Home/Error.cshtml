@@ -1,0 +1,38 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="col-md-12">
+    <div class="col-middle">
+        <div class="text-center text-center">
+            @switch (ViewBag.Status)
+            {
+                case 400:
+                    Html.RenderPartial("Error/_400");
+                    break;
+
+                case 403:
+                    Html.RenderPartial("Error/_403");
+                    break;
+
+                case 404:
+                    Html.RenderPartial("Error/_404");
+                    break;
+
+                case 500:
+                    Html.RenderPartial("Error/_500");
+                    break;
+
+                default:
+                    Html.RenderPartial("Error/_Default");
+                    break;
+            }
+
+            @if (Model.ShowRequestId)
+            {
+                <strong>Request ID:</strong> <code>@Model.RequestId</code>
+            }
+        </div>
+    </div>
+</div>

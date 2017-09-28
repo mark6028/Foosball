@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foosball.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         private readonly FoosballContext _context;
@@ -61,7 +62,7 @@ namespace Foosball.Controllers
                     .ThenInclude(t => t.PlayerOne)
                 .Include(r => r.Team)
                     .ThenInclude(t => t.PlayerTwo)
-                .Where(r => idQueryTopTeamsRatings.Contains(r.Id))
+                .Where(r => idQueryTopTeamsRatings.Contains(r.Id) && r.TeamId != null)
                 .OrderByDescending(r => r.ELO); 
 
             ViewData["CompletedMatches"] = _context.Match
@@ -80,8 +81,11 @@ namespace Foosball.Controllers
             return View();
         }
 
-        public IActionResult Error()
-        {
+        [HttpGet]
+        [Route("/Error/{status}")]
+        public IActionResult Error(int status) { 
+            ViewData["status"] = status;
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

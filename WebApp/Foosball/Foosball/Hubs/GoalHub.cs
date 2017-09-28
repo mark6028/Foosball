@@ -5,9 +5,9 @@ namespace Foosball.Hubs
 {
     public class GoalHub : Hub, IGoalHub
     {
-        public Task Send(string data)
+        public Task GoalScored(string data)
         {
-            return Clients.All.InvokeAsync("Send", data);
+            return Clients.All.InvokeAsync("GoalScored", data);
         }
     }
 }

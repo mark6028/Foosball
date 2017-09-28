@@ -4,6 +4,6 @@ namespace Foosball.Hubs
 {
     public interface IGoalHub
     {
-        Task Send(string data);
+        Task GoalScored(string data);
     }
 }

@@ -32,8 +32,11 @@ namespace Foosball
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IGoalHub, GoalHub>();
+            services.AddSingleton<IMatchHub, MatchHub>();
             services.AddSingleton<IHubContext<GoalHub>, HubContext<GoalHub>>();
+            services.AddSingleton<IHubContext<MatchHub>, HubContext<MatchHub>>();
             services.AddScoped<IGoalBroadcaster, GoalBroadcaster>();
+            services.AddScoped<IMatchBroadcaster, MatchBroadcaster>();
 
             // Add authentication services
             services.AddAuthentication(options => {
@@ -118,6 +121,8 @@ namespace Foosball
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseStatusCodePages();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -125,8 +130,10 @@ namespace Foosball
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                app.UseExceptionHandler("/Error/500");
             }
+
 
             app.UseStaticFiles();
 
@@ -152,6 +159,7 @@ namespace Foosball
             app.UseSignalR(routes =>
             {
                 routes.MapHub<GoalHub>("goal");
+                routes.MapHub<MatchHub>("match");
             });
         } 
     }

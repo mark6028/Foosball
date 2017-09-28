@@ -64,7 +64,7 @@
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
 </head>
 <body class="nav-md" style="padding-top:0px;">
-    <div class="container body">
+    <div class="container body">        
         <div class="main_container">
             <div class="col-md-3 left_col">
                 @{Html.RenderPartial("Layout/_Sidebar");}
@@ -72,7 +72,9 @@
 
             <!-- page content -->
             <div class="right_col" role="main">
-                @RenderBody()
+                @{Html.RenderPartial("Layout/_Siren");}
+                <link href="~/css/siren.css" rel="stylesheet" />
+@RenderBody()
                 </div>
             <!-- /page content -->
             <!-- footer content -->

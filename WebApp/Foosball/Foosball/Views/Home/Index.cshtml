@@ -35,12 +35,10 @@
         <script src="~/js/signalr-client.min.js"></script>
         <!--Add script to update the page and send messages.-->
         <script type="text/javascript">
-            let connection = new signalR.HubConnection('/goal');
+            let goalConnection = new signalR.HubConnection('/goal');
 
             var liveGoalContainer = $('#livegoals-list');
-
-            connection.on('send', goal => {
-                console.log('goal', goal);
+            goalConnection.on('goalScored', goal => {
                 if (!goal || !goal.Player || !goal.Match)
                     return;
 
@@ -85,8 +83,60 @@
                 $('#totalGoalsCount').text(totalGoals + 1);
             });
 
-            connection.start()
-                .then(() => connection.invoke('send', 'Welcome!'));
+            goalConnection.start();
+
+            let matchConnection = new signalR.HubConnection('/match');
+            matchConnection.on('crawl', data => {
+                activateSiren();
+            });
+
+             matchConnection.on('matchCompleted', match => {
+                 if (!match || !match.LastUpdatedAt)
+                    return;
+
+                //append goal data to container
+                $('<li>').
+                    append($('<div>')
+                        .addClass('block')
+                        .append($('<div>')
+                            .addClass('block_container')
+                            .append($('<h2>')
+                                .addClass('title')
+                                .append($('<a>')
+                                    .css("font-weight","bold")
+                                    .html('<i class="fa fa-flag-checkered"></i>&nbsp;Match completed!')
+                                )
+                            )
+                            .append($('<div>')
+                                .addClass('byline')
+                                .html('<time class="timeago" datetime="' + match.LastUpdatedAt + '"></time>')
+                            )
+                            .append($('<p>')
+                                .addClass('excerpt')
+                                .html('<a class="pull-right">Match&nbsp;Details</a>')
+                            )
+                        )
+                    ).hide()
+                    .prependTo(liveGoalContainer)
+                    .fadeIn("slow");
+
+                //only keep last 5 entries
+                liveGoalContainer.find("li").slice(5).remove();
+
+                //hide info panel
+                $('#livegoals-alert').hide();
+
+                //initialize timeago
+                $("time.timeago").timeago();
+
+                //increment total matches
+                var totalMatches = parseInt($('#totalMatchesCount').text());
+                $('#totalMatchesCount').text(totalMatches + 1);
+
+            });
+
+             matchConnection.start();
+                 //.then(() => matchConnection.invoke('matchCompleted', 'Welcome!'));
         </script>
     }
 </div>
