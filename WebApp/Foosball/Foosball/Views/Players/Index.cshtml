@@ -23,7 +23,7 @@
     <div class="list-container">
         @(Html.DevExtreme().List()
             .ID("players-list")
-          .OnItemClick("navigateToPlayerProfile")
+            .OnItemClick("navigateToPlayerProfile")
             .DataSource(Model)
             .DataSourceOptions(dso => dso
                 .Paginate(true)

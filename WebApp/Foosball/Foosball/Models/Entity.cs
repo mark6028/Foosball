@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Foosball.Models
 {
@@ -12,5 +9,11 @@ namespace Foosball.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        //TODO: replace ConvertModelToDTO() in BaseApiController to this method
+        public BaseDTO ConvertToDTO()
+        {
+            return JsonConvert.DeserializeObject<BaseDTO>(JsonConvert.SerializeObject(this));
+        }
     }
 }
